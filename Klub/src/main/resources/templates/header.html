@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Club</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/style.css}"
+              href="../../css/style.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    </head>
+    <body>
+        <div th:fragment="header">
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/home">Club Information Service</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/leagues/">Leagues</a></li>
+                    </ul>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li th:if="${#authorization.expression('!isAuthenticated()')}">
+                                <a th:href="@{/login}">Sign in <span class="glyphicon glyphicon-log-in"></span></a>
+                            </li>
+                            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                                <form th:action="@{/logout}" method="post">
+                                    <input type="submit" class="btn btn-link" value="Sign Out"/>
+                                    <a><span style="margin-left: 10px" class="glyphicon glyphicon-log-out"></span></a>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </body>
+</html>
+
