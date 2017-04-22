@@ -25,15 +25,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "ZAWODNIK_STATYSTYKI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ZawodnikStatystyki.findAll", query = "SELECT z FROM ZawodnikStatystyki z"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByIdZawodnik", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.zawodnikStatystykiPK.idZawodnik = :idZawodnik"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByIdSezon", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.zawodnikStatystykiPK.idSezon = :idSezon"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByStrzeloneBramki", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.strzeloneBramki = :strzeloneBramki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByStraconeBramki", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.straconeBramki = :straconeBramki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByZolteKartki", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.zolteKartki = :zolteKartki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByCzerwoneKartki", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.czerwoneKartki = :czerwoneKartki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByFaule", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.faule = :faule"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByRozegraneMinuty", query = "SELECT z FROM ZawodnikStatystyki z WHERE z.rozegraneMinuty = :rozegraneMinuty")})
+    @NamedQuery(name = "ZawodnikStatystyki.findAll", query = "SELECT z FROM Zawodnik_Statystyki z"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByIdZawodnik", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zawodnikStatystykiPK.idZawodnik = :idZawodnik"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByIdSezon", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zawodnikStatystykiPK.idSezon = :idSezon"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByStrzeloneBramki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.strzeloneBramki = :strzeloneBramki"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByStraconeBramki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.straconeBramki = :straconeBramki"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByZolteKartki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zolteKartki = :zolteKartki"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByCzerwoneKartki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.czerwoneKartki = :czerwoneKartki"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByFaule", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.faule = :faule"),
+    @NamedQuery(name = "ZawodnikStatystyki.findByRozegraneMinuty", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.rozegraneMinuty = :rozegraneMinuty")})
 public class Zawodnik_Statystyki implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,6 +1,9 @@
 package com.mycompany.controllers;
 
 import com.mycompany.forms.ClubForm;
+import com.mycompany.jpa.dao.KlubJpaDao;
+import com.mycompany.jpa.daointerfaces.KlubDao;
+import com.mycompany.jpa.model.Klub;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -8,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import javax.ejb.ApplicationException;
 import javax.imageio.ImageIO;
@@ -33,18 +37,9 @@ public class ClubController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String clubPage(@PathVariable("id") String id, Model model) {
 
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
-
-        //creating session object  
-        Session session = factory.openSession();
-
-        Klub club = session.find(Klub.class, Integer.parseInt(id));
+        KlubDao kdao = new KlubJpaDao();
+        Klub club = kdao.findById(Integer.parseInt(id));
         model.addAttribute("club", club);
-
-        session.close();
-        factory.close();
 
         return "/club/show_club_view";
     }
@@ -52,133 +47,121 @@ public class ClubController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
     @ResponseBody
     public byte[] clubPhoto(@PathVariable("id") String id) throws SQLException {
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
+        KlubDao kdao = new KlubJpaDao();
+        Klub club = kdao.findById(Integer.parseInt(id));
 
-        //creating session object  
-        Session session = factory.openSession();
-
-        Klub club = session.find(Klub.class, Integer.parseInt(id));
-
-        session.close();
-        factory.close();
-
-        return club.getByteLogo();
+        return club.getLogo();
     }
 
-    @GetMapping("/create")
-    public String createClub(ClubForm clubForm) {
-        return "/club/create_club_view";
-    }
-
-//    @RequestMapping(value = "/create", method = RequestMethod.POST)
-//    @ResponseBody
-//    public ModelAndView createClub(@RequestParam("name") String name, @RequestParam("file") MultipartFile file, Model model) throws IOException {
-    @PostMapping("/create")
-    @ResponseBody
-    public ModelAndView createClub(@Valid ClubForm clubForm, BindingResult result, Model model) throws IOException {
-        if (result.hasErrors()) {
-            return new ModelAndView("redirect:/club/create");
-        }
-
-        byte[] bytes;
-        bytes = clubForm.getLogo().getBytes();
-        bytes = LogoConvertion(bytes);
-
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
-        Session session = factory.openSession();
-        Transaction t = session.beginTransaction();
-
-        Klub club = new Klub();
-        club.setNazwa(clubForm.getName());
-
-        LobCreator lcreator = Hibernate.getLobCreator(session);
-        Blob blob = (Blob) lcreator.createBlob(bytes);
-        club.setLogo(blob);
-
-        session.persist(club);
-        t.commit();
-        session.close();
-        factory.close();
-
-        model.addAttribute("club", club);
-        return new ModelAndView("redirect:/club/" + club.getIdKlub());
-
-    }
-
-    @GetMapping("/{id}/edit")
-    public String editClub(ClubForm clubForm, Model model, @PathVariable("id") String id) {
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
-
-        //creating session object  
-        Session session = factory.openSession();
-
-        Klub club = session.find(Klub.class, Integer.parseInt(id));
-        model.addAttribute("club", club);
-
-        session.close();
-        factory.close();
-        return "/club/edit_club_view";
-    }
-
-    @PostMapping("/{id}/edit")
-    @ResponseBody
-    public ModelAndView editClub(@Valid ClubForm clubForm, BindingResult result, Model model, @PathVariable("id") String id) throws IOException {
-        if (result.hasErrors()) {
-            return new ModelAndView("redirect:/club/" + id + "/edit");
-        }
-
-        byte[] bytes;
-        bytes = clubForm.getLogo().getBytes();
-        bytes = LogoConvertion(bytes);
-
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
-        Session session = factory.openSession();
-        Transaction t = session.beginTransaction();
-
-        Klub club = session.find(Klub.class, Integer.parseInt(id));
-        club.setNazwa(clubForm.getName());
-
-        LobCreator lcreator = Hibernate.getLobCreator(session);
-        Blob blob = (Blob) lcreator.createBlob(bytes);
-        club.setLogo(blob);
-
-        session.update(club);
-        t.commit();
-        session.close();
-        factory.close();
-
-        model.addAttribute("club", club);
-        return new ModelAndView("redirect:/club/" + club.getIdKlub());
-
-    }
+//    @GetMapping("/create")
+//    public String createClub(ClubForm clubForm) {
+//        return "/club/create_club_view";
+//    }
     
-    @GetMapping("/{id}/remove")
-    public ModelAndView removeClub(Model model, @PathVariable("id") String id) {
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
+//    @PostMapping("/create")
+//    @ResponseBody
+//    public ModelAndView createClub(@Valid ClubForm clubForm, BindingResult result, Model model) throws IOException {
+//        if (result.hasErrors()) {
+//            return new ModelAndView("redirect:/club/create");
+//        }
+//
+//        byte[] bytes;
+//        bytes = clubForm.getLogo().getBytes();
+//        bytes = LogoConvertion(bytes);
+//
+//        Configuration cfg = new Configuration();
+//        cfg.configure("hibernate.cfg.xml");
+//        SessionFactory factory = cfg.buildSessionFactory();
+//        Session session = factory.openSession();
+//        Transaction t = session.beginTransaction();
+//
+//        Klub club = new Klub();
+//        club.setNazwa(clubForm.getName());
+//
+//        LobCreator lcreator = Hibernate.getLobCreator(session);
+//        Blob blob = (Blob) lcreator.createBlob(bytes);
+//        club.setLogo(blob);
+//
+//        session.persist(club);
+//        t.commit();
+//        session.close();
+//        factory.close();
+//
+//        model.addAttribute("club", club);
+//        return new ModelAndView("redirect:/club/" + club.getIdKlub());
+//
+//    }
 
-        //creating session object  
-        Session session = factory.openSession();
-
-        Transaction t = session.beginTransaction();
-        
-        Klub club = session.find(Klub.class, Integer.parseInt(id));
-        session.remove(club);
-        t.commit();
-        
-        session.close();
-        factory.close();
-        return new ModelAndView("redirect:/home");
-    }
+//    @GetMapping("/{id}/edit")
+//    public String editClub(ClubForm clubForm, Model model, @PathVariable("id") String id) {
+//        Configuration cfg = new Configuration();
+//        cfg.configure("hibernate.cfg.xml");
+//        SessionFactory factory = cfg.buildSessionFactory();
+//
+//        //creating session object  
+//        Session session = factory.openSession();
+//
+//        Klub club = session.find(Klub.class, Integer.parseInt(id));
+//        model.addAttribute("club", club);
+//
+//        session.close();
+//        factory.close();
+//        return "/club/edit_club_view";
+//    }
+//
+//    @PostMapping("/{id}/edit")
+//    @ResponseBody
+//    public ModelAndView editClub(@Valid ClubForm clubForm, BindingResult result, Model model, @PathVariable("id") String id) throws IOException {
+//        if (result.hasErrors()) {
+//            return new ModelAndView("redirect:/club/" + id + "/edit");
+//        }
+//
+//        byte[] bytes;
+//        bytes = clubForm.getLogo().getBytes();
+//        bytes = LogoConvertion(bytes);
+//
+//        Configuration cfg = new Configuration();
+//        cfg.configure("hibernate.cfg.xml");
+//        SessionFactory factory = cfg.buildSessionFactory();
+//        Session session = factory.openSession();
+//        Transaction t = session.beginTransaction();
+//
+//        Klub club = session.find(Klub.class, Integer.parseInt(id));
+//        club.setNazwa(clubForm.getName());
+//
+//        LobCreator lcreator = Hibernate.getLobCreator(session);
+//        Blob blob = (Blob) lcreator.createBlob(bytes);
+//        club.setLogo(blob);
+//
+//        session.update(club);
+//        t.commit();
+//        session.close();
+//        factory.close();
+//
+//        model.addAttribute("club", club);
+//        return new ModelAndView("redirect:/club/" + club.getIdKlub());
+//
+//    }
+//    
+//    @GetMapping("/{id}/remove")
+//    public ModelAndView removeClub(Model model, @PathVariable("id") String id) {
+//        Configuration cfg = new Configuration();
+//        cfg.configure("hibernate.cfg.xml");
+//        SessionFactory factory = cfg.buildSessionFactory();
+//
+//        //creating session object  
+//        Session session = factory.openSession();
+//
+//        Transaction t = session.beginTransaction();
+//        
+//        Klub club = session.find(Klub.class, Integer.parseInt(id));
+//        session.remove(club);
+//        t.commit();
+//        
+//        session.close();
+//        factory.close();
+//        return new ModelAndView("redirect:/home");
+//    }
 
     private byte[] LogoConvertion(byte[] bytes) {
         int width = 200;

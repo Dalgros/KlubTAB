@@ -7,6 +7,8 @@ package com.mycompany.jpa.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -31,9 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "KLUB")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Klub.findAll", query = "SELECT k FROM Klub k"),
-    @NamedQuery(name = "Klub.findByIdKlub", query = "SELECT k FROM Klub k WHERE k.idKlub = :idKlub"),
-    @NamedQuery(name = "Klub.findByNazwa", query = "SELECT k FROM Klub k WHERE k.nazwa = :nazwa")})
+    @NamedQuery(name = "Klub.findAll", query = "SELECT k FROM Klub k")})
 public class Klub implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class Klub implements Serializable {
     private String nazwa;
     @Lob
     @Column(name = "LOGO")
-    private Serializable logo;
+    private byte[] logo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idKlub")
     private List<Sekcja> sekcjaList;
     @OneToMany(mappedBy = "idKlub")
@@ -86,11 +86,12 @@ public class Klub implements Serializable {
         this.nazwa = nazwa;
     }
 
-    public Serializable getLogo() {
+    public byte[] getLogo() throws SQLException {
+        //Blob blob = new javax.sql.rowset.serial.SerialBlob(logo);
         return logo;
     }
 
-    public void setLogo(Serializable logo) {
+    public void setLogo(byte[] logo) {
         this.logo = logo;
     }
 

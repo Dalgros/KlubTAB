@@ -28,12 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "BUDYNEK")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Budynek.findAll", query = "SELECT b FROM Budynek b"),
-    @NamedQuery(name = "Budynek.findByIdBudynek", query = "SELECT b FROM Budynek b WHERE b.idBudynek = :idBudynek"),
-    @NamedQuery(name = "Budynek.findByKodPocztowy", query = "SELECT b FROM Budynek b WHERE b.kodPocztowy = :kodPocztowy"),
-    @NamedQuery(name = "Budynek.findByMiejscowosc", query = "SELECT b FROM Budynek b WHERE b.miejscowosc = :miejscowosc"),
-    @NamedQuery(name = "Budynek.findByUlicanumer", query = "SELECT b FROM Budynek b WHERE b.ulicanumer = :ulicanumer"),
-    @NamedQuery(name = "Budynek.findByFunkcja", query = "SELECT b FROM Budynek b WHERE b.funkcja = :funkcja")})
+    @NamedQuery(name = "Budynek.findByIdKlub", query = "SELECT b FROM Budynek b WHERE b.idKlub = :idKlub")})
 public class Budynek implements Serializable {
 
     private static final long serialVersionUID = 1L;

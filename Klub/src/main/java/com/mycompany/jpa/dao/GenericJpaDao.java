@@ -4,6 +4,7 @@ import com.mycompany.jpa.daointerfaces.GenericDao;
 import com.mycompany.jpaUtil.JpaFactory;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import javax.persistence.EntityManager;
 
 public class GenericJpaDao<T, K> implements GenericDao<T, K> {
@@ -52,7 +53,8 @@ public class GenericJpaDao<T, K> implements GenericDao<T, K> {
     public T findById(K id) 
     {
         EntityManager em = getEntityManager();
-        T dto = em.find(type, id);
+        BigDecimal bdID = BigDecimal.valueOf((Integer)id);
+        T dto = em.find(type, bdID);
         em.close();
         return dto;
     }

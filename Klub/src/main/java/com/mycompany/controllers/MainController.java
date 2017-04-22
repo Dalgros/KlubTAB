@@ -1,5 +1,8 @@
 package com.mycompany.controllers;
 
+import com.mycompany.jpa.dao.KlubJpaDao;
+import com.mycompany.jpa.daointerfaces.KlubDao;
+import com.mycompany.jpa.model.Klub;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -12,17 +15,10 @@ public class MainController {
     @RequestMapping({"/home", "/"})
     public String homePage(Model model) {
 
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernate.cfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
+        KlubDao kdao = new KlubJpaDao();
+        List<Klub> list = kdao.findAll();
+        model.addAttribute("clubList", list);
 
-        //creating session object  
-        Session session = factory.openSession();
-        List<Klub> clubList = session.createCriteria(Klub.class).list();
-        model.addAttribute("clubList", clubList);
-        session.close();
-        factory.close();
-        
         return "/home_view";
     }
     

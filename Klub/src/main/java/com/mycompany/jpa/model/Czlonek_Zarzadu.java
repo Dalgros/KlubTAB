@@ -29,12 +29,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "CZLONEK_ZARZADU")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CzlonekZarzadu.findAll", query = "SELECT c FROM CzlonekZarzadu c"),
-    @NamedQuery(name = "CzlonekZarzadu.findByIdCzlonek", query = "SELECT c FROM CzlonekZarzadu c WHERE c.idCzlonek = :idCzlonek"),
-    @NamedQuery(name = "CzlonekZarzadu.findByImie", query = "SELECT c FROM CzlonekZarzadu c WHERE c.imie = :imie"),
-    @NamedQuery(name = "CzlonekZarzadu.findByNazwisko", query = "SELECT c FROM CzlonekZarzadu c WHERE c.nazwisko = :nazwisko"),
-    @NamedQuery(name = "CzlonekZarzadu.findByStanowisko", query = "SELECT c FROM CzlonekZarzadu c WHERE c.stanowisko = :stanowisko"),
-    @NamedQuery(name = "CzlonekZarzadu.findByPensja", query = "SELECT c FROM CzlonekZarzadu c WHERE c.pensja = :pensja")})
+    @NamedQuery(name = "CzlonekZarzadu.findAll", query = "SELECT c FROM Czlonek_Zarzadu c"),
+    @NamedQuery(name = "CzlonekZarzadu.findByIdCzlonek", query = "SELECT c FROM Czlonek_Zarzadu c WHERE c.idCzlonek = :idCzlonek"),
+    @NamedQuery(name = "CzlonekZarzadu.findByImie", query = "SELECT c FROM Czlonek_Zarzadu c WHERE c.imie = :imie"),
+    @NamedQuery(name = "CzlonekZarzadu.findByNazwisko", query = "SELECT c FROM Czlonek_Zarzadu c WHERE c.nazwisko = :nazwisko"),
+    @NamedQuery(name = "CzlonekZarzadu.findByStanowisko", query = "SELECT c FROM Czlonek_Zarzadu c WHERE c.stanowisko = :stanowisko"),
+    @NamedQuery(name = "CzlonekZarzadu.findByPensja", query = "SELECT c FROM Czlonek_Zarzadu c WHERE c.pensja = :pensja")})
 public class Czlonek_Zarzadu implements Serializable {
 
     private static final long serialVersionUID = 1L;
