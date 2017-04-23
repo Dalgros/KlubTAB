@@ -1,46 +1,40 @@
-//package com.mycompany.controllers;
-//
-//import com.mycompany.forms.PlayerForm;
-//import java.text.DateFormat;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-//import java.util.List;
-//import javax.validation.Valid;
-//import org.apache.log4j.Logger;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//@Controller
-//@RequestMapping("/club/{idClub}/sections/{idSection}/teams/{idTeam}/players")
-//
-//public class PlayerController {
-//
+package com.mycompany.controllers;
+
+import com.mycompany.forms.PlayerForm;
+import com.mycompany.jpa.dao.ZawodnikJpaDao;
+import com.mycompany.jpa.daointerfaces.ZawodnikDao;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.validation.Valid;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping("/club/{idClub}/sections/{idSection}/teams/{idTeam}/players")
+
+public class PlayerController {
+
 //    Logger log = Logger.getLogger(TeamController.class);
 //
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
 //    public String showPlayers(@PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection, @PathVariable("idTeam") String idTeam, Model model) {
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Query query = session.createQuery("from Zawodnik where id_druzyna=:id");
-//        query.setParameter("id", idTeam);
-//        List<Zawodnik> playerList = query.getResultList();
-//        model.addAttribute("playersList", playerList);
+//        ZawodnikDao zdao = new ZawodnikJpaDao();
+//        model.addAttribute("playersList", zdao.findByIdDruzyna(Integer.parseInt(idTeam)));
 //        model.addAttribute("Club", idClub);
 //        model.addAttribute("Team", idTeam);
 //        model.addAttribute("Section", idSection);
-//        session.close();
 //        return "player/show_player_view";
 //    }
-//
+
 //    @GetMapping("/remove/{idPlayer}")
 //    public ModelAndView removePlayer(Model model, @PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection, @PathVariable("idTeam") String idTeam, @PathVariable("idPlayer") String idPlayer) {
 //        Configuration cfg = new Configuration();
@@ -142,5 +136,5 @@
 //    }
 //
 //    
-//
-//}
+
+}

@@ -33,8 +33,8 @@
                                 <div class="panel-heading" >
                                     <p th:text="'Function: '+${building.funkcja}"/>
                                     <div align="right" th:if="${#authorization.expression('isAuthenticated()')}">
-                                        <a th:href="@{/club/__${admin.budynek..idKlub.idKlub}__/buildings/edit/__${admin.budynek..idbudynek}__}"><span style="margin-left: 10px" class="glyphicon glyphicon-pencil"></span> </a>
-                                        <a th:href="@{/club/__${admin.budynek..idKlub.idKlub}__/buildings/remove/__${admin.budynek..idbudynek}__}"><span style="margin-left: 30px" class="glyphicon glyphicon-remove"></span> </a>                         
+                                        <a th:href="@{/club/__${building.idKlub}__/buildings/edit/__${building.idBudynek}__}"><span style="margin-left: 10px" class="glyphicon glyphicon-pencil"></span> </a>
+                                        <a th:href="@{/club/__${building.idKlub}__/buildings/remove/__${building.idBudynek}__}"><span style="margin-left: 30px" class="glyphicon glyphicon-remove"></span> </a>                         
                                     </div>
                                 </div>
                                 <div class="panel-body" > 

@@ -18,7 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,6 +37,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Klub.findAll", query = "SELECT k FROM Klub k")})
+@NamedStoredProcedureQuery(
+	name = "usunklub", 
+	procedureName = "usunklub", 
+	parameters = { 
+		@StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid")
+	}
+)
 public class Klub implements Serializable {
 
     private static final long serialVersionUID = 1L;

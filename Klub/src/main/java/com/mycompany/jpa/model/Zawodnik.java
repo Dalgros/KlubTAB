@@ -32,14 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ZAWODNIK")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Zawodnik.findAll", query = "SELECT z FROM Zawodnik z"),
-    @NamedQuery(name = "Zawodnik.findByIdZawodnik", query = "SELECT z FROM Zawodnik z WHERE z.idZawodnik = :idZawodnik"),
-    @NamedQuery(name = "Zawodnik.findByImie", query = "SELECT z FROM Zawodnik z WHERE z.imie = :imie"),
-    @NamedQuery(name = "Zawodnik.findByNazwisko", query = "SELECT z FROM Zawodnik z WHERE z.nazwisko = :nazwisko"),
-    @NamedQuery(name = "Zawodnik.findByDataUrodzenia", query = "SELECT z FROM Zawodnik z WHERE z.dataUrodzenia = :dataUrodzenia"),
-    @NamedQuery(name = "Zawodnik.findByWzrost", query = "SELECT z FROM Zawodnik z WHERE z.wzrost = :wzrost"),
-    @NamedQuery(name = "Zawodnik.findByWaga", query = "SELECT z FROM Zawodnik z WHERE z.waga = :waga")})
+//@NamedQueries({
+    //@NamedQuery(name = "Zawodnik.findByIdDruzyna", query = "SELECT z FROM Zawodnik z WHERE z.idDruzyna = :idDruzyna")})
 public class Zawodnik implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -32,9 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "DRUZYNA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Druzyna.findAll", query = "SELECT d FROM Druzyna d"),
-    @NamedQuery(name = "Druzyna.findByIdDruzyna", query = "SELECT d FROM Druzyna d WHERE d.idDruzyna = :idDruzyna"),
-    @NamedQuery(name = "Druzyna.findByNazwa", query = "SELECT d FROM Druzyna d WHERE d.nazwa = :nazwa")})
+    @NamedQuery(name = "Druzyna.findByIdSekcja", query = "SELECT d FROM Druzyna d WHERE d.idSekcja = :idSekcja"),
+    @NamedQuery(name = "Druzyna.findByIdLiga", query = "SELECT d FROM Druzyna d WHERE d.idLiga = :idLiga")})
 public class Druzyna implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -128,5 +127,5 @@ public class Druzyna implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Druzyna[ idDruzyna=" + idDruzyna + " ]";
     }
-    
+
 }

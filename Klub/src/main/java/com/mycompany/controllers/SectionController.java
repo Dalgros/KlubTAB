@@ -1,43 +1,35 @@
-//package com.mycompany.controllers;
-//
-//import com.mycompany.forms.SectionForm;
-//import java.util.List;
-//import javax.validation.Valid;
-//import org.apache.log4j.Logger;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//@Controller
-//@RequestMapping("/club/{idClub}/sections")
-//
-//public class SectionController {
-//
-//    Logger log = Logger.getLogger(SectionController.class);
-//
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String sectionPage(@PathVariable("idClub") String idClub, Model model) {
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//        Query query = session.createQuery("from Sekcja where Id_Klub=:id");
-//        query.setParameter("id", idClub);
-//        List<Sekcja> sectionList = query.getResultList();
-//        model.addAttribute("sectionList", sectionList);
-//        model.addAttribute("Club", idClub);
-//        session.close();
-//        return "/section/show_section_view";
-//
-//    }
-//
+package com.mycompany.controllers;
+
+import com.mycompany.forms.SectionForm;
+import com.mycompany.jpa.dao.SekcjaJpaDao;
+import com.mycompany.jpa.daointerfaces.SekcjaDao;
+import java.util.List;
+import javax.validation.Valid;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping("/club/{idClub}/sections")
+
+public class SectionController {
+
+    Logger log = Logger.getLogger(SectionController.class);
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String sectionPage(@PathVariable("idClub") String idClub, Model model) {
+        SekcjaDao sdao = new SekcjaJpaDao();
+        model.addAttribute("sectionList", sdao.findByIdKlub(Integer.parseInt(idClub)));
+        model.addAttribute("Club", idClub);
+        return "/section/show_section_view";
+
+    }
+
 //    @GetMapping("/remove/{idSection}")
 //    public ModelAndView removeSection(Model model, @PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection) {
 //        Configuration cfg = new Configuration();
@@ -119,4 +111,4 @@
 //        return new ModelAndView("redirect:/club/" + section.getIdKlub() + "/sections/");
 //
 //    }
-//}
+}

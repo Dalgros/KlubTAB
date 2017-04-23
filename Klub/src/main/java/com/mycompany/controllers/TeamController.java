@@ -1,42 +1,36 @@
-//package com.mycompany.controllers;
-//
-//import com.mycompany.forms.TeamForm;
-//import java.util.List;
-//import javax.validation.Valid;
-//import org.apache.log4j.Logger;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//@Controller
-//@RequestMapping("/club/{idClub}/sections/{idSection}/teams")
-//
-//public class TeamController {
-//
-//    Logger log = Logger.getLogger(TeamController.class);
-//
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String showTeams(@PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection, Model model) {
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Query query = session.createQuery("from Druzyna where id_sekcja=:id");
-//        query.setParameter("id", idSection);
-//        List<Druzyna> teamList = query.getResultList();
-//        model.addAttribute("Section", idSection);
-//        model.addAttribute("teamList", teamList);
-//        model.addAttribute("Club", idClub);
-//        session.close();
-//        return "/team/show_team_view";
-//
-//    }
-//
+package com.mycompany.controllers;
+
+import com.mycompany.forms.TeamForm;
+import com.mycompany.jpa.dao.DruzynaJpaDao;
+import com.mycompany.jpa.daointerfaces.DruzynaDao;
+import java.util.List;
+import javax.validation.Valid;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping("/club/{idClub}/sections/{idSection}/teams")
+
+public class TeamController {
+
+    Logger log = Logger.getLogger(TeamController.class);
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String showTeams(@PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection, Model model) {
+        DruzynaDao ddao = new DruzynaJpaDao();
+        model.addAttribute("Section", idSection);
+        model.addAttribute("teamList", ddao.findByIdSekcja(Integer.parseInt(idSection)));
+        model.addAttribute("Club", idClub);
+        return "/team/show_team_view";
+
+    }
+
 //    @GetMapping("/remove/{idTeam}")
 //    public ModelAndView removeTeam(Model model, @PathVariable("idClub") String idClub, @PathVariable("idSection") String idSection, @PathVariable("idTeam") String idTeam) {
 //        Configuration cfg = new Configuration();
@@ -123,5 +117,5 @@
 //        session.close();
 //        return new ModelAndView("redirect:/club/" + idClub + "/sections/" + idSection + "/teams/");
 //    }
-//
-//}
+
+}

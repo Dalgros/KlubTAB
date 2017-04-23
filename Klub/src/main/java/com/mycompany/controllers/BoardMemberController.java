@@ -1,53 +1,43 @@
-//package com.mycompany.controllers;
-//
-//import com.mycompany.forms.BoardMemberForm;
-//import java.io.IOException;
-//import java.util.List;
-//import javax.validation.Valid;
-//import org.apache.log4j.Logger;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//@Controller
-//@RequestMapping("/club/{idClub}/boardmembers")
-//public class BoardMemberController {
-//
-//    Logger log = Logger.getLogger(BoardMemberController.class);
-//
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String boardMemberPage(@PathVariable("idClub") String idClub, Model model) {
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//        Query query = session.createQuery("from CzlonekZarzadu where Id_Klub=:id");
-//        query.setParameter("id", idClub);
-//        List<CzlonekZarzadu> membersList = query.getResultList();
-//
-//        session.close();
-//        model.addAttribute("club", idClub);
-//        model.addAttribute("memberList", membersList);
-//
-//        return "/boardmember/show_boardmember_view";
-//    }
-//
-//    @GetMapping("/create")
-//    public String createMember(BoardMemberForm boardMemberForm, Model model, @PathVariable("idClub") String idClub) {
-//        model.addAttribute("club", idClub);
-//        return "/boardmember/create_boardmember_view";
-//    }
-//
+package com.mycompany.controllers;
+
+import com.mycompany.forms.BoardMemberForm;
+import com.mycompany.jpa.dao.CzlonekZarzaduJpaDao;
+import com.mycompany.jpa.daointerfaces.CzlonekZarzaduDao;
+import java.io.IOException;
+import java.util.List;
+import javax.validation.Valid;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping("/club/{idClub}/boardmembers")
+public class BoardMemberController {
+
+    Logger log = Logger.getLogger(BoardMemberController.class);
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String boardMemberPage(@PathVariable("idClub") String idClub, Model model) {
+        CzlonekZarzaduDao czdao = new CzlonekZarzaduJpaDao();
+        model.addAttribute("club", idClub);
+        model.addAttribute("memberList", czdao.findByIdKlub(Integer.parseInt(idClub)));
+        return "/boardmember/show_boardmember_view";
+    }
+
+    @GetMapping("/create")
+    public String createMember(BoardMemberForm boardMemberForm, Model model, @PathVariable("idClub") String idClub) {
+        model.addAttribute("club", idClub);
+        return "/boardmember/create_boardmember_view";
+    }
+
 //    @RequestMapping(value = "/create", method = RequestMethod.POST)
 //    public ModelAndView createmember(@Valid BoardMemberForm boardMember, @PathVariable("idClub") String idClub, Model model) {
 //        Configuration cfg = new Configuration();
@@ -149,4 +139,4 @@
 //        
 //        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
 //    }
-//}
+}

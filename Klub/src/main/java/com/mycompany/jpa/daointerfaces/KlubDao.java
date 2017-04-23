@@ -6,5 +6,6 @@ import java.util.List;
 public interface KlubDao extends GenericDao<Klub,Integer>{
 
     public List<Klub> findAll();
+    public void usun(Integer idKlub);
     
 }
