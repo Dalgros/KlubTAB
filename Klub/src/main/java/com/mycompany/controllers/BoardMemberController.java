@@ -2,9 +2,14 @@ package com.mycompany.controllers;
 
 import com.mycompany.forms.BoardMemberForm;
 import com.mycompany.jpa.dao.CzlonekZarzaduJpaDao;
+import com.mycompany.jpa.dao.KlubJpaDao;
 import com.mycompany.jpa.daointerfaces.CzlonekZarzaduDao;
+import com.mycompany.jpa.daointerfaces.KlubDao;
+import com.mycompany.jpa.model.Czlonek_Zarzadu;
+import com.mycompany.jpa.model.Klub;
 import java.io.IOException;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -38,105 +43,65 @@ public class BoardMemberController {
         return "/boardmember/create_boardmember_view";
     }
 
-//    @RequestMapping(value = "/create", method = RequestMethod.POST)
-//    public ModelAndView createmember(@Valid BoardMemberForm boardMember, @PathVariable("idClub") String idClub, Model model) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Transaction t = session.beginTransaction();
-//
-//        Klub klub = session.find(Klub.class, Integer.parseInt(idClub));
-//        
-//        CzlonekZarzadu member = new CzlonekZarzadu();
-//        member.setImie(boardMember.getFirstName());
-//        member.setNazwisko(boardMember.getLastName());
-//        member.setStanowisko(boardMember.getPosition());
-//        member.setPensja(boardMember.getSalary());
-//        member.setProcentUdzialow(Float.parseFloat(String.valueOf(boardMember.getPercent())));
-//        member.setIdKlub(klub);
-//        
-//        session.persist(member);
-//        t.commit();
-//
-//        session.close();
-//        factory.close();
-//        
-//        model.addAttribute("club", idClub);
-//
-//        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
-//
-//    }
-//    
-//    @GetMapping("/edit/{idMember}")
-//    public String editBoardMember(BoardMemberForm boardMember, Model model, @PathVariable("idClub") String idClub, @PathVariable("idMember") String idMember) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        CzlonekZarzadu member = session.find(CzlonekZarzadu.class, Integer.parseInt(idMember));
-//
-//        model.addAttribute("club", idClub);
-//        model.addAttribute("member", member);
-//        
-//        session.close();
-//        factory.close();
-//        return "/boardmember/edit_boardmember_view";
-//    }
-//
-//    @PostMapping("/edit/{idMember}")
-//    @ResponseBody
-//    public ModelAndView editBoardMember(@Valid BoardMemberForm boardMember, BindingResult result, Model model, @PathVariable("idClub") String idClub, @PathVariable("idMember") String idMember) throws IOException {
-//        if (result.hasErrors()) {
-//            return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/edit/" + idMember);
-//        }
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Transaction t = session.beginTransaction();
-//
-//        CzlonekZarzadu member = session.find(CzlonekZarzadu.class, Integer.parseInt(idMember));
-//        member.setImie(boardMember.getFirstName());
-//        member.setNazwisko(boardMember.getLastName());
-//        member.setStanowisko(boardMember.getPosition());
-//        member.setPensja(boardMember.getSalary());
-//        member.setProcentUdzialow(Float.parseFloat(String.valueOf(boardMember.getPercent())));
-//
-//        session.update(member);
-//        t.commit();
-//        session.close();
-//        factory.close();
-//        
-//        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
-//
-//    }
-//    
-//    @GetMapping("/remove/{idMember}")
-//    public ModelAndView removeBoardMember(Model model, @PathVariable("idClub") String idClub,@PathVariable("idMember") String idMember) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Transaction t = session.beginTransaction();
-//        
-//        CzlonekZarzadu member = session.find(CzlonekZarzadu.class, Integer.parseInt(idMember) );
-//        session.remove(member);
-//        t.commit();
-//        
-//        session.close();
-//        factory.close();
-//        
-//        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
-//    }
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ModelAndView createmember(@Valid BoardMemberForm boardMember, @PathVariable("idClub") String idClub, Model model) {
+        
+        CzlonekZarzaduDao czdao = new CzlonekZarzaduJpaDao();
+
+        KlubDao kdao = new KlubJpaDao();
+        Klub klub = kdao.findById(Integer.parseInt(idClub));
+        
+        Czlonek_Zarzadu member = new Czlonek_Zarzadu();
+        member.setImie(boardMember.getFirstName());
+        member.setNazwisko(boardMember.getLastName());
+        member.setStanowisko(boardMember.getPosition());
+        member.setPensja(new BigInteger(boardMember.getSalary().toString()));
+        member.setIdKlub(klub);
+        
+        czdao.dodaj(member);
+
+        model.addAttribute("club", idClub);
+        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
+
+    }
+    
+    @GetMapping("/edit/{idMember}")
+    public String editBoardMember(BoardMemberForm boardMember, Model model, @PathVariable("idClub") String idClub, @PathVariable("idMember") String idMember) {
+        CzlonekZarzaduDao czdao = new CzlonekZarzaduJpaDao();
+        Czlonek_Zarzadu member = czdao.findById(Integer.parseInt(idMember));
+        model.addAttribute("club", idClub);
+        model.addAttribute("member", member);
+        return "/boardmember/edit_boardmember_view";
+    }
+
+    @PostMapping("/edit/{idMember}")
+    @ResponseBody
+    public ModelAndView editBoardMember(@Valid BoardMemberForm boardMember, BindingResult result, Model model, @PathVariable("idClub") String idClub, @PathVariable("idMember") String idMember) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/edit/" + idMember);
+        }
+
+        CzlonekZarzaduDao czdao = new CzlonekZarzaduJpaDao();
+        Czlonek_Zarzadu member = new Czlonek_Zarzadu();
+        member.setImie(boardMember.getFirstName());
+        member.setNazwisko(boardMember.getLastName());
+        member.setStanowisko(boardMember.getPosition());
+        member.setPensja(new BigInteger(boardMember.getSalary().toString()));
+        KlubDao kdao = new KlubJpaDao();
+        Klub klub = kdao.findById(Integer.parseInt(idClub));
+        member.setIdKlub(klub);
+        member.setIdCzlonek(new BigDecimal(idMember));
+
+        czdao.edytuj(member);
+
+        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
+
+    }
+    
+    @GetMapping("/remove/{idMember}")
+    public ModelAndView removeBoardMember(Model model, @PathVariable("idClub") String idClub,@PathVariable("idMember") String idMember) {
+        CzlonekZarzaduDao czdao = new CzlonekZarzaduJpaDao();
+        czdao.usun(Integer.parseInt(idMember));
+        return new ModelAndView("redirect:/club/" + idClub + "/boardmembers/");
+    }
 }

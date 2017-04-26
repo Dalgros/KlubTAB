@@ -7,5 +7,7 @@ public interface KlubDao extends GenericDao<Klub,Integer>{
 
     public List<Klub> findAll();
     public void usun(Integer idKlub);
-    
+    public void dodaj(Klub klub);
+    public void edytuj(Klub klub);
+   
 }

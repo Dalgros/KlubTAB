@@ -1,11 +1,13 @@
 package com.mycompany.controllers;
 
+import com.mycompany.forms.LeagueForm;
 import com.mycompany.jpa.dao.DruzynaJpaDao;
 import com.mycompany.jpa.dao.LigaJpaDao;
 import com.mycompany.jpa.daointerfaces.DruzynaDao;
 import com.mycompany.jpa.daointerfaces.LigaDao;
 import com.mycompany.jpa.model.Liga;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -42,99 +44,51 @@ public class LeagueController {
         model.addAttribute("teamList", ddao.findByIdLiga(Integer.parseInt(leagueId)));
         return "/league/show_concrete_league_view";
     }
-//
-//    @GetMapping("/create")
-//    public String createLeague(LeagueForm leagueForm, Model model) {
-//        return "/league/create_league_view";
-//    }
-//
-//    @RequestMapping(value = "/create", method = RequestMethod.POST)
-//    public ModelAndView createleague(@Valid LeagueForm leagueForm, Model model) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Transaction t = session.beginTransaction();
-//        
-//        Liga league = new Liga();
-//        league.setNazwa(leagueForm.getName());
-//        league.setKraj(leagueForm.getCountry());
-//        
-//        session.persist(league);
-//        t.commit();
-//
-//        session.close();
-//        factory.close();
-//
-//        return new ModelAndView("redirect:/leagues/");
-//
-//    }
-//    
-//    @GetMapping("/edit/{idLeague}")
-//    public String editLeague(LeagueForm leagueForm, Model model, @PathVariable("idLeague") String idLeague) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Liga league = session.find(Liga.class, Integer.parseInt(idLeague));
-//
-//        model.addAttribute("league", league);
-//        
-//        session.close();
-//        factory.close();
-//        return "/league/edit_league_view";
-//    }
-//
-//    @PostMapping("/edit/{idLeague}")
-//    @ResponseBody
-//    public ModelAndView editLeague(@Valid LeagueForm leagueForm, BindingResult result, Model model, @PathVariable("idLeague") String idLeague) throws IOException {
-//        if (result.hasErrors()) {
-//            return new ModelAndView("redirect:/league/edit/" + idLeague);
-//        }
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Transaction t = session.beginTransaction();
-//
-//        Liga league = session.find(Liga.class, Integer.parseInt(idLeague));
-//        league.setNazwa(leagueForm.getName());
-//        league.setKraj(leagueForm.getCountry());
-//
-//        session.update(league);
-//        t.commit();
-//        session.close();
-//        factory.close();
-//        
-//        return new ModelAndView("redirect:/leagues/");
-//
-//    }
-//    
-//    @GetMapping("/remove/{idLeague}")
-//    public ModelAndView removeLeague(Model model, @PathVariable("idLeague") String idLeague) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Transaction t = session.beginTransaction();
-//        
-//        Liga league = session.find(Liga.class, Integer.parseInt(idLeague));
-//        session.remove(league);
-//        t.commit();
-//        
-//        session.close();
-//        factory.close();
-//        
-//        return new ModelAndView("redirect:/leagues/");
-//    }
+
+    @GetMapping("/create")
+    public String createLeague(LeagueForm leagueForm, Model model) {
+        return "/league/create_league_view";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ModelAndView createleague(@Valid LeagueForm leagueForm, Model model) {
+        LigaDao ldao = new LigaJpaDao();
+        Liga league = new Liga();
+        league.setNazwa(leagueForm.getName());
+        league.setKraj(leagueForm.getCountry());
+        ldao.dodaj(league);
+        return new ModelAndView("redirect:/leagues/");
+    }
+    
+    @GetMapping("/edit/{idLeague}")
+    public String editLeague(LeagueForm leagueForm, Model model, @PathVariable("idLeague") String idLeague) {
+        LigaDao ldao = new LigaJpaDao();
+        Liga league = ldao.findById(Integer.parseInt(idLeague));
+        model.addAttribute("league", league);
+        return "/league/edit_league_view";
+    }
+
+    @PostMapping("/edit/{idLeague}")
+    @ResponseBody
+    public ModelAndView editLeague(@Valid LeagueForm leagueForm, BindingResult result, Model model, @PathVariable("idLeague") String idLeague) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("redirect:/league/edit/" + idLeague);
+        }
+
+        LigaDao ldao = new LigaJpaDao();
+        Liga league = ldao.findById(Integer.parseInt(idLeague));
+        BigDecimal bd = new BigDecimal(idLeague);
+        league.setIdLiga(bd);
+        league.setNazwa(leagueForm.getName());
+        league.setKraj(leagueForm.getCountry());
+        ldao.edytuj(league);
+        return new ModelAndView("redirect:/leagues/");
+    }
+    
+    @GetMapping("/remove/{idLeague}")
+    public ModelAndView removeLeague(Model model, @PathVariable("idLeague") String idLeague) {
+        LigaDao ldao = new LigaJpaDao();
+        ldao.usun(Integer.parseInt(idLeague));
+        return new ModelAndView("redirect:/leagues/");
+    }
 }

@@ -21,6 +21,8 @@ public class JpaFactory {
     }
 
     public static EntityManager getEntityManager() {
-        return getInstanance().emf.createEntityManager();
+        EntityManager em = getInstanance().emf.createEntityManager();
+        em.clear();
+        return em;
     }
 }

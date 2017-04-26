@@ -6,4 +6,8 @@ import java.util.List;
 public interface LigaDao extends GenericDao<Liga,Integer>{
     
     public List<Liga> findAll();
+    public List<Liga> findByName(String nazwa);
+    public void usun(Integer idLiga);
+    public void dodaj(Liga liga);
+    public void edytuj(Liga liga);
 }

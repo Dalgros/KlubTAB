@@ -17,7 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,6 +38,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Druzyna.findByIdSekcja", query = "SELECT d FROM Druzyna d WHERE d.idSekcja = :idSekcja"),
     @NamedQuery(name = "Druzyna.findByIdLiga", query = "SELECT d FROM Druzyna d WHERE d.idLiga = :idLiga")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunDruzyna", procedureName = "PAKIET_DRUZYNA.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_iddruzyna")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajDruzyna", procedureName = "PAKIET_DRUZYNA.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsekcja"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idliga"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujDruzyna", procedureName = "PAKIET_DRUZYNA.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_iddruzyna"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsekcja"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idliga"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa")}
+    )
+})
 public class Druzyna implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -15,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +33,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Budynek.findByIdKlub", query = "SELECT b FROM Budynek b WHERE b.idKlub = :idKlub")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunBudynek", procedureName = "PAKIET_BUDYNEK.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajBudynek", procedureName = "PAKIET_BUDYNEK.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "kod"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_miejsce"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_ulica"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_fun")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujBudynek", procedureName = "PAKIET_BUDYNEK.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "id_bud"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "kod"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_miejsce"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_ulica"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_fun")}
+    )
+})
 public class Budynek implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -133,5 +160,5 @@ public class Budynek implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Budynek[ idBudynek=" + idBudynek + " ]";
     }
-    
+
 }

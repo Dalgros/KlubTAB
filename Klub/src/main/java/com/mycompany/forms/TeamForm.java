@@ -4,7 +4,7 @@ public class TeamForm {
 
    private String name;
    
-   private String league;
+   private Integer league;
 
     public String getName() {
         return name;
@@ -14,11 +14,11 @@ public class TeamForm {
         this.name = name;
     }
 
-    public String getLeague() {
+    public Integer getLeague() {
         return league;
     }
 
-    public void setLeague(String league) {
+    public void setLeague(Integer league) {
         this.league = league;
     }
    

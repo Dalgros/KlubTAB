@@ -10,10 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import javax.ejb.ApplicationException;
 import javax.imageio.ImageIO;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
@@ -49,99 +47,52 @@ public class ClubController {
     public byte[] clubPhoto(@PathVariable("id") String id) throws SQLException {
         KlubDao kdao = new KlubJpaDao();
         Klub club = kdao.findById(Integer.parseInt(id));
-
         return club.getLogo();
     }
 
-//    @GetMapping("/create")
-//    public String createClub(ClubForm clubForm) {
-//        return "/club/create_club_view";
-//    }
+    @GetMapping("/create")
+    public String createClub(ClubForm clubForm) {
+        return "/club/create_club_view";
+    }
     
-//    @PostMapping("/create")
-//    @ResponseBody
-//    public ModelAndView createClub(@Valid ClubForm clubForm, BindingResult result, Model model) throws IOException {
-//        if (result.hasErrors()) {
-//            return new ModelAndView("redirect:/club/create");
-//        }
-//
-//        byte[] bytes;
-//        bytes = clubForm.getLogo().getBytes();
-//        bytes = LogoConvertion(bytes);
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Transaction t = session.beginTransaction();
-//
-//        Klub club = new Klub();
-//        club.setNazwa(clubForm.getName());
-//
-//        LobCreator lcreator = Hibernate.getLobCreator(session);
-//        Blob blob = (Blob) lcreator.createBlob(bytes);
-//        club.setLogo(blob);
-//
-//        session.persist(club);
-//        t.commit();
-//        session.close();
-//        factory.close();
-//
-//        model.addAttribute("club", club);
-//        return new ModelAndView("redirect:/club/" + club.getIdKlub());
-//
-//    }
+    @PostMapping("/create")
+    @ResponseBody
+    public ModelAndView createClub(@Valid ClubForm clubForm, BindingResult result, Model model) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("redirect:/club/create");
+        }
+       
+        KlubDao kdao = new KlubJpaDao();
+        Klub club = new Klub();
+        club.setNazwa(clubForm.getName());
+        club.setLogo(logoConvertion(clubForm.getLogo().getBytes()));
+        kdao.dodaj(club);
+        return new ModelAndView("redirect:/home");
+    }
 
-//    @GetMapping("/{id}/edit")
-//    public String editClub(ClubForm clubForm, Model model, @PathVariable("id") String id) {
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//
-//        //creating session object  
-//        Session session = factory.openSession();
-//
-//        Klub club = session.find(Klub.class, Integer.parseInt(id));
-//        model.addAttribute("club", club);
-//
-//        session.close();
-//        factory.close();
-//        return "/club/edit_club_view";
-//    }
-//
-//    @PostMapping("/{id}/edit")
-//    @ResponseBody
-//    public ModelAndView editClub(@Valid ClubForm clubForm, BindingResult result, Model model, @PathVariable("id") String id) throws IOException {
-//        if (result.hasErrors()) {
-//            return new ModelAndView("redirect:/club/" + id + "/edit");
-//        }
-//
-//        byte[] bytes;
-//        bytes = clubForm.getLogo().getBytes();
-//        bytes = LogoConvertion(bytes);
-//
-//        Configuration cfg = new Configuration();
-//        cfg.configure("hibernate.cfg.xml");
-//        SessionFactory factory = cfg.buildSessionFactory();
-//        Session session = factory.openSession();
-//        Transaction t = session.beginTransaction();
-//
-//        Klub club = session.find(Klub.class, Integer.parseInt(id));
-//        club.setNazwa(clubForm.getName());
-//
-//        LobCreator lcreator = Hibernate.getLobCreator(session);
-//        Blob blob = (Blob) lcreator.createBlob(bytes);
-//        club.setLogo(blob);
-//
-//        session.update(club);
-//        t.commit();
-//        session.close();
-//        factory.close();
-//
-//        model.addAttribute("club", club);
-//        return new ModelAndView("redirect:/club/" + club.getIdKlub());
-//
-//    }
+    @GetMapping("/{id}/edit")
+    public String editClub(ClubForm clubForm, Model model, @PathVariable("id") String id) {
+        KlubDao kdao = new KlubJpaDao();
+        Klub club = kdao.findById(Integer.parseInt(id));
+        model.addAttribute("club", club);
+        return "/club/edit_club_view";
+    }
+
+    @PostMapping("/{id}/edit")
+    @ResponseBody
+    public ModelAndView editClub(@Valid ClubForm clubForm, BindingResult result, Model model, @PathVariable("id") String id) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("redirect:/home");
+        }
+        
+        Klub club = new Klub();
+        BigDecimal bd = new BigDecimal(id);
+        club.setIdKlub(bd);
+        club.setNazwa(clubForm.getName());
+        club.setLogo(logoConvertion(clubForm.getLogo().getBytes()));
+        return new ModelAndView("redirect:/club/" + club.getIdKlub());
+
+    }
     
     @GetMapping("/{id}/remove")
     public ModelAndView removeClub(Model model, @PathVariable("id") String id) {
@@ -150,51 +101,30 @@ public class ClubController {
         return new ModelAndView("redirect:/home");
     }
 
-//    private byte[] LogoConvertion(byte[] bytes) {
-//        int width = 200;
-//        int height = 200;
-//        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-//        try {
-//            BufferedImage img = ImageIO.read(in);
-//            if (height == 0) {
-//                height = (width * img.getHeight()) / img.getWidth();
-//            }
-//            if (width == 0) {
-//                width = (height * img.getWidth()) / img.getHeight();
-//            }
-//            Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-//            BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-//            imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0, 0, 0), null);
-//
-//            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//
-//            ImageIO.write(imageBuff, "jpg", buffer);
-//
-//            bytes = buffer.toByteArray();
-//        } catch (IOException e) {
-//            log.error("File convertion error");
-//        }
-//        return bytes;
-//    }
-//
-//    private static class ApplicationExceptionImpl implements ApplicationException {
-//
-//        public ApplicationExceptionImpl() {
-//        }
-//
-//        @Override
-//        public boolean rollback() {
-//            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        }
-//
-//        @Override
-//        public boolean inherited() {
-//            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        }
-//
-//        @Override
-//        public Class<? extends Annotation> annotationType() {
-//            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        }
-//    }
+    private byte[] logoConvertion(byte[] bytes) {
+        int width = 200;
+        int height = 200;
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        try {
+            BufferedImage img = ImageIO.read(in);
+            if (height == 0) {
+                height = (width * img.getHeight()) / img.getWidth();
+            }
+            if (width == 0) {
+                width = (height * img.getWidth()) / img.getHeight();
+            }
+            Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0, 0, 0), null);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            ImageIO.write(imageBuff, "jpg", buffer);
+
+            bytes = buffer.toByteArray();
+        } catch (IOException e) {
+            log.error("File convertion error");
+        }
+        return bytes;
+    }
 }

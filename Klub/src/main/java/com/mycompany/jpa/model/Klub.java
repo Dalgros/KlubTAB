@@ -5,11 +5,13 @@
  */
 package com.mycompany.jpa.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import javassist.bytecode.ByteArray;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.ParameterMode;
@@ -37,13 +40,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Klub.findAll", query = "SELECT k FROM Klub k")})
-@NamedStoredProcedureQuery(
-	name = "usunklub", 
-	procedureName = "usunklub", 
-	parameters = { 
-		@StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid")
-	}
-)
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunKlub", procedureName = "PAKIET_KLUB.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajKlub", procedureName = "PAKIET_KLUB.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa")
+                //,@StoredProcedureParameter(mode = ParameterMode.INOUT, type = Byte.class, name = "p_logo")
+            }
+    ),
+    @NamedStoredProcedureQuery(name = "edytujKlub", procedureName = "PAKIET_KLUB.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "pid"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa")
+                //,@StoredProcedureParameter(mode = ParameterMode.INOUT, type = Blob.class, name = "p_logo")
+            }
+    )
+})
 public class Klub implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -156,5 +171,5 @@ public class Klub implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Klub[ idKlub=" + idKlub + " ]";
     }
-    
+
 }

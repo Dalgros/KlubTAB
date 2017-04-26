@@ -15,7 +15,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,7 +34,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "LIGA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Liga.findAll", query = "SELECT l FROM Liga l")})
+    @NamedQuery(name = "Liga.findAll", query = "SELECT l FROM Liga l"),
+    @NamedQuery(name = "Liga.findByName", query = "SELECT l FROM Liga l WHERE l.nazwa = :nazwa")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunLiga", procedureName = "PAKIET_LIGA.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idliga")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajLiga", procedureName = "PAKIET_LIGA.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_kraj")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujLiga", procedureName = "PAKIET_LIGA.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idliga"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwa"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_kraj")}
+    )
+})
 public class Liga implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,8 +88,8 @@ public class Liga implements Serializable {
         this.kraj = kraj;
     }
 
-    public BigDecimal getIdLiga() {
-        return idLiga;
+    public Integer getIdLiga() {
+        return Integer.valueOf(idLiga.toString());
     }
 
     public void setIdLiga(BigDecimal idLiga) {
@@ -123,5 +145,5 @@ public class Liga implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Liga[ idLiga=" + idLiga + " ]";
     }
-    
+
 }

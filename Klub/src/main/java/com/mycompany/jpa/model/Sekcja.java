@@ -17,7 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,6 +37,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Sekcja.findByIdKlub", query = "SELECT s FROM Sekcja s WHERE s.idKlub = :idKlub")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunSekcja", procedureName = "PAKIET_SEKCJA.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsekcja")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajSekcja", procedureName = "PAKIET_SEKCJA.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idklub"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_dysc"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_plec")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujSekcja", procedureName = "PAKIET_SEKCJA.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsekcja"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idklub"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_dysc"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_plec")}
+    )
+})
 public class Sekcja implements Serializable {
 
     private static final long serialVersionUID = 1L;
