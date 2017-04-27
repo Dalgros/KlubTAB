@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    
+
                     <h1 align="center">Edit player</h1>
                     <form action="#" method="post" th:action="@{/club/__${Club}__/sections/__${Section}__/teams/__${Team}__/players/edit/__${Player}__}" th:object="${playerForm}">
                         <div class="form-group">
@@ -29,10 +29,18 @@
                             <input type="text" th:field="*{lastname}" class="form-control" placeholder="Enter lastname"/>
                         </div> 
                         <div class="form-group">
-                            <label>Player birtdate</label> 
-                            <label> Day:</label> <input type="number" th:field="*{day}" class="form-control" min="1" max="31" placeholder=""/>
-                            <label> Month: </label><input type="number" th:field="*{month}" class="form-control" min="1" max="12" placeholder=""/>
-                            <label>Year:</label> <input type="number" th:field="*{year}" class="form-control" min="1900" placeholder=""/>
+                            <label>Player birth date</label> 
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label> Day: </label> <input type="number" th:field="*{day}" class="form-control" min="1" max="31" placeholder=""/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label> Month: </label><input type="number" th:field="*{month}" class="form-control" min="1" max="12" placeholder=""/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label> Year: </label> <input type="number" th:field="*{year}" class="form-control" min="1900" placeholder=""/>
+                                </div>
+                            </div> 
                         </div> 
                         <div class="form-group">
                             <label>

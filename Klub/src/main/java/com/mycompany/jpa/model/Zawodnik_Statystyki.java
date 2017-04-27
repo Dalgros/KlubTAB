@@ -7,6 +7,7 @@ package com.mycompany.jpa.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,13 +32,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ZawodnikStatystyki.findAll", query = "SELECT z FROM Zawodnik_Statystyki z"),
     @NamedQuery(name = "ZawodnikStatystyki.findByIdZawodnik", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zawodnikStatystykiPK.idZawodnik = :idZawodnik"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByIdSezon", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zawodnikStatystykiPK.idSezon = :idSezon"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByStrzeloneBramki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.strzeloneBramki = :strzeloneBramki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByStraconeBramki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.straconeBramki = :straconeBramki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByZolteKartki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zolteKartki = :zolteKartki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByCzerwoneKartki", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.czerwoneKartki = :czerwoneKartki"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByFaule", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.faule = :faule"),
-    @NamedQuery(name = "ZawodnikStatystyki.findByRozegraneMinuty", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.rozegraneMinuty = :rozegraneMinuty")})
+    @NamedQuery(name = "ZawodnikStatystyki.findByIdSezon", query = "SELECT z FROM Zawodnik_Statystyki z WHERE z.zawodnikStatystykiPK.idSezon = :idSezon")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunStatystyki", procedureName = "PAKIET_ZAWODNIKSTATYSTYKI.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idzawodnik")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajStatystyki", procedureName = "PAKIET_ZAWODNIKSTATYSTYKI.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsezon"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_strzelone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_stracone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_zolte"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_czerwone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_faule"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_minuty")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujStatystyki", procedureName = "PAKIET_ZAWODNIKSTATYSTYKI.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idsezon"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_strzelone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_stracone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_zolte"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_czerwone"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_faule"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_minuty")}
+    )
+})
 public class Zawodnik_Statystyki implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -165,5 +190,5 @@ public class Zawodnik_Statystyki implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.ZawodnikStatystyki[ zawodnikStatystykiPK=" + zawodnikStatystykiPK + " ]";
     }
-    
+
 }

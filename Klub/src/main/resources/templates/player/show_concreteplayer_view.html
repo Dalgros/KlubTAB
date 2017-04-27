@@ -35,6 +35,8 @@
                         <div align="center"> <a th:href="@{/club/__${Club}__/sections/__${idSection}__/teams/__${Team}__/players/__${Player.idZawodnik}__/create/}">Add new statistics<span style="margin-left: 10px" class="glyphicon glyphicon-plus"></span> </a> </div>
                     </div>
                     <br/>
+                    <h3 align="center">Statistics</h3>
+                    <br/>
                     <div th:unless="${#lists.isEmpty(statisticsList)}">
                         <ul class="list-group">
                             <div  th:each="statistic : ${statisticsList}" >                             
@@ -49,12 +51,31 @@
                                     <div th:text="' Player fauls commited '+${statistic.czerwoneKartki} "/>
                                     <div align="right" th:if="${#authorization.expression('isAuthenticated()')}">
                                         <a th:href="@{/club/__${Club}__/sections/__${idSection}__/teams/__${Team}__/players/__${Player.idZawodnik}__/edit/__${statistic.sezon.idSezon}__}"><span style="margin-left: 10px" class="glyphicon glyphicon-pencil"></span> </a>
-                                        <a th:href="@{/club/__${Club}__/sections/__${idSection}__/teams/__${Team}__/players/__${Player.idZawodnik}__/remove/__${statistic.sezon.idSezon}__}"><span style="margin-left: 30px" class="glyphicon glyphicon-remove"></span> </a> 
+                                        <a th:href="@{/club/__${Club}__/sections/__${idSection}__/teams/__${Team}__/players/__${Player.idZawodnik}__/remove/__${statistic.}__}"><span style="margin-left: 30px" class="glyphicon glyphicon-remove"></span> </a> 
                                     </div>
                                 </li>
                             </div>
                         </ul>
-
+                    </div>
+                    <br/>
+                    <h3 align="center">Contracts</h3>
+                    <br/>
+                    <div th:if="${#authorization.expression('isAuthenticated()')}">
+                        <div align="center"> <a th:href="@{/club/__${Club}__/sections/__${idSection}__/teams/__${Team}__/players/__${Player.idZawodnik}__/createContract/}">Add new contract<span style="margin-left: 10px" class="glyphicon glyphicon-plus"></span> </a> </div>
+                    </div>
+                    <div th:unless="${#lists.isEmpty(contractList)}">
+                        <ul class="list-group">
+                            <div  th:each="contract : ${contractList}" >                             
+                                <li class="list-group-item">
+                                    <b><span th:text="'Contract'"/></b>
+                                    <divbr/>
+                                    <div th:text="' Contract start date: '+${contract.poczatekKontraktu} "/>
+                                    <div th:text="' Contract start date: '+${contract.koniecKontraktu} "/>
+                                    <div th:text="' Salary: '+${contract.pensja} "/>
+                                    <div th:text="' Market value: '+${contract.wartoscRynkowa} "/>
+                                </li>
+                            </div>
+                        </ul>
                     </div>
                 </div>
             </div>

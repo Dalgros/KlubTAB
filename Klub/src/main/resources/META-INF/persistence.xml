@@ -14,9 +14,9 @@
     <class>com.mycompany.jpa.model.Zawodnik_Statystyki</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@212.33.90.213:1521:XE"/>
-      <property name="javax.persistence.jdbc.user" value="karol_nowicki"/>
+      <property name="javax.persistence.jdbc.user" value="michal_sokol"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="javax.persistence.jdbc.password" value="karol_nowicki"/>
+      <property name="javax.persistence.jdbc.password" value="michal_sokol"/>
       <property name="eclipselink.logging.level" value="FINE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <!--<property name="javax.persistence.schema-generation.database.action" value="none"/>-->

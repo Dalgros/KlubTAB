@@ -53,7 +53,7 @@
                             <select class="form-control" th:field="*{season}" id="sel1">
                                 <div th:unless="${#lists.isEmpty(seasonList)}">
                                     <div th:each="season : ${seasonList}" >
-                                        <option th:text="${season.rok}"></option>
+                                        <option th:value="${season.rok}" th:text="${season.rok}"></option>
                                     </div>
                                 </div>
                             </select>

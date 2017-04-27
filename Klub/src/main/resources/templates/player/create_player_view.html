@@ -27,12 +27,19 @@
                             <label>Last name</label> 
                             <input type="text" th:field="*{lastname}" class="form-control" placeholder="Enter lastname"/>
                         </div> 
+                        <label>Player birth date</label>
                         <div class="form-group">
-                            <label>Player birtdate</label> 
-                            <label> Day:</label> <input type="number" th:field="*{day}" class="form-control" min="1" max="31" placeholder=""/>
-                            <label> Month: </label><input type="number" th:field="*{month}" class="form-control" min="1" max="12" placeholder=""/>
-                            <label>Year:</label> <input type="number" th:field="*{year}" class="form-control" min="1900" placeholder=""/>
+                            <div class="col-md-4">
+                                <label> Day: </label> <input type="number" th:field="*{day}" class="form-control" min="1" max="31" placeholder=""/>
+                            </div>
+                            <div class="col-md-4">
+                                <label> Month: </label><input type="number" th:field="*{month}" class="form-control" min="1" max="12" placeholder=""/>
+                            </div>
+                            <div class="col-md-4">
+                                <label> Year: </label> <input type="number" th:field="*{year}" class="form-control" min="1900" placeholder=""/>
+                            </div>
                         </div> 
+                        </br>
                         <div class="form-group">
                             <label>
                                 Weight:<input type="number" th:field="*{weight}" class="form-control" min="60" max="200" step="0.1" placeholder=""/>
@@ -41,6 +48,42 @@
                         <div class="form-group">
                             <label>
                                 Height<input type="number" th:field="*{height}" class="form-control" min="110" max="240" step="1" placeholder=""/>
+                            </label>
+                        </div>
+                        <label> Contract tart date</label> 
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label> Day: </label> <input type="number" th:field="*{Sday}" class="form-control" min="1" max="31" placeholder=""/>
+                            </div> 
+                            <div class="col-md-4">
+                                <label> Month: </label><input type="number" th:field="*{Smonth}" class="form-control" min="1" max="12" placeholder=""/>
+                            </div> 
+                            <div class="col-md-4">
+                                <label> Year: </label> <input type="number" th:field="*{Syear}" class="form-control" min="1900" placeholder=""/>
+                            </div> 
+                        </div> 
+                        </br>
+                        <label> Contract end date</label> 
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label> Day: </label> <input type="number" th:field="*{Eday}" class="form-control" min="1" max="31" placeholder=""/>
+                            </div> 
+                            <div class="col-md-4">
+                                <label> Month: </label><input type="number" th:field="*{Emonth}" class="form-control" min="1" max="12" placeholder=""/>
+                            </div> 
+                            <div class="col-md-4">
+                                <label> Year: </label> <input type="number" th:field="*{Eyear}" class="form-control" min="1900" placeholder=""/>
+                            </div> 
+                        </div> 
+                        </br>
+                        <div class="form-group">
+                            <label>
+                                Salary <input type="number" th:field="*{salary}" class="form-control" placeholder=""/>
+                            </label>
+                        </div> 
+                        <div class="form-group">
+                            <label>
+                                Value <input type="number" th:field="*{value}" class="form-control" placeholder=""/>
                             </label>
                         </div>
 

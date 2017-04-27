@@ -48,14 +48,4 @@ public class LigaJpaDao extends GenericJpaDao<Liga, Integer> implements LigaDao 
         em.close();
     }
 
-    @Override
-    public List<Liga> findByName(String nazwa) {
-        EntityManager em = getEntityManager();
-        Query query = em.createNamedQuery("Liga.findByName");
-        query.setParameter("nazwa", nazwa);
-        List<Liga> result = query.getResultList();
-        em.close();
-        return result;
-    }
-
 }

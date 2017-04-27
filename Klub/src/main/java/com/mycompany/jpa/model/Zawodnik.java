@@ -16,7 +16,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,8 +36,33 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ZAWODNIK")
 @XmlRootElement
-//@NamedQueries({
-    //@NamedQuery(name = "Zawodnik.findByIdDruzyna", query = "SELECT z FROM Zawodnik z WHERE z.idDruzyna = :idDruzyna")})
+@NamedQueries({
+    @NamedQuery(name = "Zawodnik.findByIdDruzyna", query = "SELECT z FROM Zawodnik z, Kontrakt k WHERE k.kontraktPK.idDruzyna = :idDruzyna AND k.kontraktPK.idZawodnik = z.idZawodnik"),
+    @NamedQuery(name = "Zawodnik.findAll", query = "SELECT z FROM Zawodnik z")})
+
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunZawodnik", procedureName = "PAKIET_ZAWODNIK.usun",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idzawodnik")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajZawodnik", procedureName = "PAKIET_ZAWODNIK.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_imie"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwisko"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Date.class, name = "p_data"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_wzrost"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_waga")}
+    ),
+    @NamedStoredProcedureQuery(name = "edytujZawodnik", procedureName = "PAKIET_ZAWODNIK.modyfikuj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idzawodnik"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_imie"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "p_nazwisko"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Date.class, name = "p_data"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_wzrost"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_waga")}
+    )
+})
 public class Zawodnik implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -158,5 +187,5 @@ public class Zawodnik implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Zawodnik[ idZawodnik=" + idZawodnik + " ]";
     }
-    
+
 }

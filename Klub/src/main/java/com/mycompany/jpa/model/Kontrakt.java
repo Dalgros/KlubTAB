@@ -15,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,12 +33,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Kontrakt.findAll", query = "SELECT k FROM Kontrakt k"),
-    @NamedQuery(name = "Kontrakt.findByIdZawodnik", query = "SELECT k FROM Kontrakt k WHERE k.kontraktPK.idZawodnik = :idZawodnik"),
-    @NamedQuery(name = "Kontrakt.findByIdDruzyna", query = "SELECT k FROM Kontrakt k WHERE k.kontraktPK.idDruzyna = :idDruzyna"),
-    @NamedQuery(name = "Kontrakt.findByPoczatekKontraktu", query = "SELECT k FROM Kontrakt k WHERE k.poczatekKontraktu = :poczatekKontraktu"),
-    @NamedQuery(name = "Kontrakt.findByKoniecKontraktu", query = "SELECT k FROM Kontrakt k WHERE k.koniecKontraktu = :koniecKontraktu"),
-    @NamedQuery(name = "Kontrakt.findByPensja", query = "SELECT k FROM Kontrakt k WHERE k.pensja = :pensja"),
-    @NamedQuery(name = "Kontrakt.findByWartoscRynkowa", query = "SELECT k FROM Kontrakt k WHERE k.wartoscRynkowa = :wartoscRynkowa")})
+    @NamedQuery(name = "Kontrakt.findByZawodnik", query = "SELECT k FROM Kontrakt k WHERE k.kontraktPK.idZawodnik = :idZawodnik")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "usunKontraktDruzyna", procedureName = "PAKIET_KONTRAKT.usun_druzyna",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_iddruzyna")}
+    ),
+    @NamedStoredProcedureQuery(name = "usunKontraktZawodnik", procedureName = "PAKIET_KONTRAKT.usun_zawodnik",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idzawodnika")}
+    ),
+    @NamedStoredProcedureQuery(name = "dodajKontrakt", procedureName = "PAKIET_KONTRAKT.dodaj",
+            parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_idzawodnika"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_iddruzyna"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Date.class, name = "p_poczatek"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Date.class, name = "p_koniec"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_pensja"),
+                @StoredProcedureParameter(mode = ParameterMode.INOUT, type = Integer.class, name = "p_wartosc")
+            })
+})
 public class Kontrakt implements Serializable {
 
     private static final long serialVersionUID = 1L;

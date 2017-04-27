@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Sezon.findAll", query = "SELECT s FROM Sezon s"),
-    @NamedQuery(name = "Sezon.findByIdSezon", query = "SELECT s FROM Sezon s WHERE s.idSezon = :idSezon"),
-    @NamedQuery(name = "Sezon.findByRok", query = "SELECT s FROM Sezon s WHERE s.rok = :rok")})
+    @NamedQuery(name = "Sezon.findByYear", query = "SELECT s FROM Sezon s WHERE s.rok = :rok")})
 public class Sezon implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -109,5 +108,5 @@ public class Sezon implements Serializable {
     public String toString() {
         return "com.mycompany.jpa.model.Sezon[ idSezon=" + idSezon + " ]";
     }
-    
+
 }
